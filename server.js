@@ -28,6 +28,7 @@ app.get("/date", (req, res) => {
 });
 
 app.use("/user",userRoutes);
+
 app.use("/jobs", jobRoutes);
 app.use("/admin", adminRoutes);
 export default app;

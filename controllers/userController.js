@@ -215,4 +215,25 @@ const editProfile = async(req,res)=>{
     return res.status(500).json({error:"Failed to edit user"})
   }
 }
-export default { signUp, signIn, getProfile, verifyEmail,getById ,getAppliedJobs,editProfile};
+
+const googleFormData = async(req,res)=>{
+  console.log(req.body);
+  const {name,email,phone,CVUrl,yearsOfExperience,skills,degrees,address,yearOfGraduation,gender} = req.body;
+  //console.log(req.body);
+  const existingUser = await userModel.findOne({where:{email}});
+  if(!existingUser){
+    return res.status(404).json({message:"User not found"});
+  }
+  existingUser.name = name;
+  existingUser.phone = phone;
+  existingUser.CVUrl = CVUrl;
+  existingUser.yearsOfExperience = yearsOfExperience;
+  existingUser.skills = skills;
+  existingUser.degrees = degrees;
+  existingUser.address = address;
+  existingUser.yearOfGraduation = yearOfGraduation;
+  existingUser.gender = gender;
+  await existingUser.save();
+  return res.json(existingUser);
+}
+export default { signUp, signIn, getProfile, verifyEmail,getById ,getAppliedJobs,editProfile,googleFormData};
