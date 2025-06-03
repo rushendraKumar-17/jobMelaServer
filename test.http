@@ -1,0 +1,176 @@
+#Test cases for the job portal API
+###
+# Api route for user signup
+POST http://localhost:8000/user/signup
+Content-Type: application/json
+
+{
+  "name": "testuser",
+  "email": "rushendra@gmail.com",
+  "password": "1234"
+  
+}
+
+
+###
+POST http://localhost:8000/user/verify-email
+Content-Type: application/json
+
+{
+  "email":"rushendrakumar17@gmail.com",
+  "verificationCode":"650218"
+}
+
+###
+# Api route for getting all jobs
+GET http://localhost:8000/jobs/getAll
+
+
+###
+#Api route for creating a new job
+POST http://localhost:8000/jobs/create
+Content-Type: application/json
+
+{
+  "title": "Python engineer",
+  "description": "We want python developer",
+  "company": "Scale Orange",
+  "skills": [
+    "python","django"
+  ],
+  "location": ["Chennai"],
+  "yearsOfExperience": "2",
+  "salary": "100000",
+  "gender": "male",
+  "languagesKnown": [
+    "English",
+    "Hindi"
+  ],
+  "requirements":[
+    "Good communication skills",
+    "Ability to work in a team",
+    "Problem-solving skills"
+  ],
+  "degrees": [
+    "B.Tech",
+    "M.Tech"
+  ],
+  "minYearOfGraduation": "2020",
+  "maxYearOfGraduation": "2023",
+  "branch": "CSE"
+}
+
+###
+# Api route for getting a job by ID
+GET http://localhost:8000/jobs/getById/1
+
+
+###
+# Api route for deleting a job
+DELETE http://localhost:8000/jobs/delete/1
+
+
+###
+# Api route for admin signup
+POST http://localhost:8000/admin/signup
+Content-Type: application/json
+
+{
+  "name": "adminuser",
+  "email": "admin@gmail.com",
+  "password": "1234",
+  "company": "Scale orange",
+  "location": "Chennai",
+  "phone": "1234567890"
+}
+
+###
+# Api route for admin verification
+POST http://localhost:8000/admin/verify
+Content-Type: application/json
+
+{
+  "email": "testuser@gmail.com",
+  "verificationCode": "645156"
+}
+
+###
+# Api route for admin login
+POST http://localhost:8000/admin/signin
+Content-Type: application/json
+
+{
+  "email": "testuser@gmail.com",
+  "password": "1234"
+}
+
+###
+# Api route for applying for a job
+GET http://localhost:8000/jobs/apply/3
+
+###
+# Api route for getting all applications
+GET http://localhost:8000/jobs/1/applications
+
+###
+# Api route for editing a job
+PUT http://localhost:8000/jobs/edit/3
+Content-Type: application/json
+
+{
+  "title": "Devops Engineer",
+  "description": "We are looking for a DevOps engineer to join our team. The ideal candidate should have experience in managing cloud infrastructure, CI/CD pipelines, and container orchestration.",
+  "company": "Scale orange",
+  "skills": [
+    "Kubernetes",
+    "Docker",
+    "AWS",
+    "Terraform",
+    "CI/CD"
+  ],
+  "location": ["Bangalore"],
+  "yearsOfExperience": "2",
+  "salary": "100000",
+  "gender": "male",
+  "languagesKnown": [
+    "English",
+    "Hindi"
+  ],
+  "requirements":[
+    "Good communication skills",
+    "Ability to work in a team",
+    "Problem-solving skills"
+  ],
+  "degrees": [
+    "B.Tech",
+    "M.Tech"
+  ],
+  "minYearOfGraduation": "2020",
+  "maxYearOfGraduation": "2023",
+  "branch": "CSE"
+}
+
+
+###
+
+GET http://localhost:8000/user/getById/1
+
+
+
+###
+GET http://localhost:8000/date
+
+
+###
+GET http://localhost:8000/user/getEnrolledJobs/1
+
+
+
+###
+POST http://localhost:8000/jobs/1/comment/
+Content-Type: application/json
+
+{
+  "comment": "Good job",
+  "sender": "Rushendra"
+}
