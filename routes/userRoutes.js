@@ -1,6 +1,6 @@
 import express from 'express';
 import userController from '../controllers/userController.js';
-import app from '../server.js';
+import tokenVerification from '../middleware/tokenVerification.js';
 const router = express.Router();
 
 
@@ -10,6 +10,6 @@ router.post('/signin', userController.signIn );
 router.get('/profile', userController.getProfile );
 router.post('/verify-email', userController.verifyEmail );
 router.get("/getById/:id",userController.getById);
-router.get("/getEnrolledJobs/:id",userController.getAppliedJobs);
+router.get("/getEnrolledJobs/:id",tokenVerification(["user"]),userController.getAppliedJobs);
 router.post("/google-form-data",userController.googleFormData);
 export default router;

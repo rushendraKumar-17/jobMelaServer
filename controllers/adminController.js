@@ -1,7 +1,11 @@
 import { sequelize } from "../config/connectDb.js";
 import admin from "../models/adminModel.js";
+import applicationModel from "../models/applicationModel.js";
 import jwt from "jsonwebtoken";
+import jobModel from "../models/jobModel.js";
 import mailer from "../services/mailer.js";
+import { where } from "sequelize";
+import bcrypt from "bcryptjs";
 const signup = async (req, res) => {
   try {
     let { name, email, password, company,role } = req.body;
@@ -11,18 +15,19 @@ const signup = async (req, res) => {
     if (!name || !email || !password || !company ) {
       return res.status(400).json({ error: "All fields are required" });
     }
+
     // Check if admin already exists
     const existingAdmin = await admin.findOne({ where: { email } });
     if (existingAdmin && existingAdmin.isVerified) {
       return res.status(400).json({ error: "Admin already exists" });
     }
     
-
+    const hashedPassword = await bcrypt.hash(password, 10);
     // Create new admin
     const createdAdmin = await admin.create({
       name,
       email,
-      password,
+      password:hashedPassword,
       company,
       isVerified: true,
       role
@@ -37,45 +42,43 @@ const signup = async (req, res) => {
   }
 };
 
-const signin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    // Validate input
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Email and password are required" });
-    }
-    // Check if admin exists
-    const existingAdmin = await admin.findOne({ where: { email } });
-    if (!existingAdmin) {
-      return res.status(404).json({ message: "Admin not found" });
-    }
-    // Check if password matches
-    if (existingAdmin.password !== password) {
-      return res.status(401).json({ message: "Invalid password" });
-    }
-    // Check if admin is verified
-    if (!existingAdmin.isVerified) {
-      return res.status(403).json({ message: "Admin not verified" });
-    }
-    // Sign in successful
-    const token = await jwt.sign(
-      { id: existingAdmin.id, email: existingAdmin.email },
-      process.env.JWT_SECRET || "secret"
-    );
-    res
-      .status(200)
-      .json({
-        message: "Admin signed in successfully",
-        token,
-        company: existingAdmin.company,
-      });
-  } catch (error) {
-    //console.log(error)
-    res.status(500).json({ message: "Error signing in admin", error });
-  }
-};
+// const signin = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     // Validate input
+//     if (!email || !password) {
+//       return res
+//         .status(400)
+//         .json({ message: "Email and password are required" });
+//     }
+//     // Check if admin exists
+//     const existingAdmin = await admin.findOne({ where: { email } });
+//     if (!existingAdmin) {
+//       return res.status(404).json({ message: "Admin not found" });
+//     }
+//     // Check if password matches
+//     if (existingAdmin.password !== password) {
+//       return res.status(401).json({ message: "Invalid password" });
+//     }
+//     // Check if admin is verified
+    
+//     // Sign in successful
+//     const token = await jwt.sign(
+//       { id: existingAdmin.id, email: existingAdmin.email },
+//       process.env.JWT_SECRET || "secret"
+//     );
+//     res
+//       .status(200)
+//       .json({
+//         message: "Admin signed in successfully",
+//         token,
+//         company: existingAdmin.company,
+//       });
+//   } catch (error) {
+//     //console.log(error)
+//     res.status(500).json({ message: "Error signing in admin", error });
+//   }
+// };
 
 const verifyUser = async (req, res) => {
   const { email, verificationCode } = req.body;
@@ -185,12 +188,25 @@ const changeRole = async (req, res) => {
     res.status(500).json({ message: "Error updating admin", error });
   }
 }
+
+const getReport = async (req, res) => {
+  try{
+    const admin = req.user;
+    const jobs = await jobModel.findAll({where:{company:admin.company}})
+    const applications = await applicationModel.findAll({where:{jobId:jobs.map(job=>job.id)}})
+    res.status(200).json({jobs,applications});
+  }catch(error){
+    console.log(error)
+    res.status(500).json({ message: "Error getting report", error });
+  }
+}
 export default {
-  signin,
+  
   signup,
   verifyUser,
   deleteAdmin,
   getAllAdmins,
   editAdmin,
-  changeRole
+  changeRole,
+  getReport
 };

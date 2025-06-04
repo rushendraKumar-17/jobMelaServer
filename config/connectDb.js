@@ -3,6 +3,7 @@ import { Sequelize } from "sequelize";
 let sequelizeInstance = null;
 
 const connectDb = async () => {
+  
   if (sequelizeInstance) {
     console.log("Using existing database connection.");
     return sequelizeInstance;

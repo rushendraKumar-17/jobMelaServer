@@ -56,7 +56,18 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       defaultValue: "any"
     },
-    
+    languages: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      defaultValue: []
+    },
+    formSubmitted:{
+      type:DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    role:{
+      type:DataTypes.STRING,
+      defaultValue: "user"
+    }
   },
   {
     tableName: "users", 

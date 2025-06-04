@@ -6,10 +6,21 @@ import connectDb from './config/connectDb.js';
 import cors from 'cors';
 import jobRoutes from './routes/jobRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import melaRoutes from "./routes/melaRoutes.js";
+import { sequelize } from "./config/connectDb.js";
 const app = express();
 (async () => {
   await connectDb();
   // Start your server here or elsewhere
+})();
+(async () => {
+  await sequelize.sync()
+  try {
+    await sequelize.sync({ alter: true }); // creates/updates tables
+    console.log("Tables synced");
+  } catch (err) {
+    //console.error("Error syncing tables:", err);
+  }
 })();
 app.use(cors()); 
 app.use(express.json());
@@ -31,4 +42,5 @@ app.use("/user",userRoutes);
 
 app.use("/jobs", jobRoutes);
 app.use("/admin", adminRoutes);
+app.use("/mela",melaRoutes);
 export default app;

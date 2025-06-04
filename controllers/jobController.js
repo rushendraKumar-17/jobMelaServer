@@ -114,12 +114,8 @@ const applyForJob = async (req, res) => {
   const { jobId } = req.params;
 
   // Replace with authenticated user info
-  const user = {
-    id: 3,
-    name: "Rushendra", // Ideally from auth middleware
-    email: "rushi@gmail.com",
-  };
-
+  const user = req.user;
+  console.log(user)
   try {
     const job = await jobModel.findByPk(jobId);
 
@@ -128,17 +124,17 @@ const applyForJob = async (req, res) => {
     }
 
     const existingApplication = await applicationModel.findOne({
-      where: { userId: user.id, jobId },
+      where: { userId: user.userId, jobId },
     });
 
     if (existingApplication) {
       return res
         .status(400)
-        .json({ error: "You have already applied for this job" });
+        .json({ message: "You have already applied for this job" });
     }
 
     await applicationModel.create({
-      userId: user.id,
+      userId: user.userId,
       jobId,
       status: "applied",
       name: user.name || "Anonymous",
@@ -152,8 +148,8 @@ const applyForJob = async (req, res) => {
 
     return res.status(200).json({ message: "Applied for job successfully" });
   } catch (error) {
-    //console.error("Apply for job error:", error);
-    return res.status(500).json({ message: "Failed to apply for job" });
+    console.error("Apply for job error:", error);
+    return res.status(400).json({ message: "Failed to apply for job" });
   }
 };
 

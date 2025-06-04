@@ -28,17 +28,18 @@ GET http://localhost:8000/jobs/getAll
 
 ###
 #Api route for creating a new job
-POST http://localhost:8000/jobs/create
+POST http://localhost:8000/jobs/add
 Content-Type: application/json
 
 {
-  "title": "Python engineer",
-  "description": "We want python developer",
-  "company": "Scale Orange",
+  "title": "Cloud engineer",
+  "description": "We are looking for a DevOps engineer to join our team. The ideal candidate should have experience in managing cloud infrastructure, CI/CD pipelines, and container orchestration.",
+  "company": "Scale orange",
   "skills": [
-    "python","django"
+    "React",
+    "Angular"
   ],
-  "location": ["Chennai"],
+  "location": ["Bangalore"],
   "yearsOfExperience": "2",
   "salary": "100000",
   "gender": "male",
@@ -52,11 +53,10 @@ Content-Type: application/json
     "Problem-solving skills"
   ],
   "degrees": [
-    "B.Tech",
-    "M.Tech"
+    "B.Tech"
   ],
-  "minYearOfGraduation": "2020",
-  "maxYearOfGraduation": "2023",
+  "minYearOfGraduation": "2022",
+  "maxYearOfGraduation": "2028",
   "branch": "CSE"
 }
 
@@ -118,15 +118,12 @@ PUT http://localhost:8000/jobs/edit/3
 Content-Type: application/json
 
 {
-  "title": "Devops Engineer",
+  "title": "Cloud engineer",
   "description": "We are looking for a DevOps engineer to join our team. The ideal candidate should have experience in managing cloud infrastructure, CI/CD pipelines, and container orchestration.",
   "company": "Scale orange",
   "skills": [
-    "Kubernetes",
-    "Docker",
-    "AWS",
-    "Terraform",
-    "CI/CD"
+    "React",
+    "Angular"
   ],
   "location": ["Bangalore"],
   "yearsOfExperience": "2",
@@ -142,11 +139,10 @@ Content-Type: application/json
     "Problem-solving skills"
   ],
   "degrees": [
-    "B.Tech",
-    "M.Tech"
+    "B.Tech"
   ],
-  "minYearOfGraduation": "2020",
-  "maxYearOfGraduation": "2023",
+  "minYearOfGraduation": "2022",
+  "maxYearOfGraduation": "2028",
   "branch": "CSE"
 }
 
@@ -173,4 +169,45 @@ Content-Type: application/json
 {
   "comment": "Good job",
   "sender": "Rushendra"
+}
+
+
+###
+POST http://localhost:8000/mela/create
+Content-Type: application/json
+
+{
+  "name": "Prakasam Mega Job Mela 2025",
+  "description": "",
+  "startDate": "2025-2-14",
+  "endDate": "2025-2-15",
+  "location": ["16.0472","79.3073"], 
+  "area": "Dr. BR Ambedkar Auditorium, Yerragonda Palem"
+}
+
+
+###
+GET http://localhost:8000/mela/getMela/1
+
+
+
+###
+POST http://localhost:8000/user/google-form-data
+Content-Type: application/json
+
+{
+  "timestamp": "2025-06-04T07:56:56.263Z",
+  "responses": {
+    "Name": "Rushendra",
+    "Gender":"Male",
+    "Phone": "1234567890",
+    "Email": "rushendrakumar17@gmail.com",
+    "Years Of Experience": "3",
+    "Skills (Comma Seperated )": "React,Angular",
+    "Degrees (Comma Seperated )": "B.Tech,M.Tech",
+    "Address": "Home",
+    "Year Of Graduation": "2024",
+    "Languages( Comma Seperated )": "English,Telugu,Hindi",
+    "CV": [ "1_rAitKoIW1DXcH4SwCfITedk9s5TXHBG" ]
+  }
 }
